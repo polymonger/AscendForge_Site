@@ -62,6 +62,12 @@
       radial-gradient(ellipse 40% 30% at 15% 70%, rgba(200,135,58,0.06) 0%, transparent 50%),
       #0a0a0a;
   }
+  .hero-bg-img {
+    position: absolute; inset: 0;
+    background: url('assets/hero/forge-bg.jpg') center center / cover no-repeat;
+    opacity: 0.12;
+    mix-blend-mode: luminosity;
+  }
   .hero-content { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; width: 100%; }
   @media (max-width: 700px) { .hero-content { grid-template-columns: 1fr; gap: 32px; } .hero-visual { display: none; } }
   .hero-text h1 { font-family: var(--f-display); font-size: clamp(52px, 9vw, 88px); font-weight: 900; line-height: 0.93; text-transform: uppercase; letter-spacing: -0.01em; color: var(--c-white); margin-bottom: 20px; }
@@ -93,12 +99,7 @@
     gap: 14px;
     opacity: 0.6;
   }
-  .preview-tri {
-    animation: floatY 3s ease-in-out infinite;
-  }
-  @keyframes floatY { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-  .preview-label { font-family: var(--f-display); font-size: 14px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--c-ember); }
-  .preview-hint { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--c-muted); }
+
   .preview-badge {
     position: absolute; top: 16px; left: 50%; transform: translateX(-50%);
     font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
@@ -179,7 +180,9 @@
 
 <nav id="nav">
   <div class="container nav-inner">
-    <a href="index.html" class="nav-logo">Ascend<span>Forge</span></a>
+    <a href="index.html" class="nav-logo">
+      <img src="assets/logo/ascendforge-logo.png" alt="AscendForge" style="height:32px;width:auto;display:block;">
+    </a>
     <div class="nav-right">
       <a href="index.html" class="nav-back">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
@@ -192,6 +195,7 @@
 <!-- HERO -->
 <section class="hero" id="top">
   <div class="hero-bg"></div>
+  <div class="hero-bg-img"></div>
   <div class="container">
     <div class="hero-content">
       <div class="hero-text">
@@ -222,15 +226,7 @@
       <div class="hero-visual reveal">
         <div class="game-preview">
           <div class="preview-badge">Solana dApp Store</div>
-          <div class="game-preview-inner">
-            <svg class="preview-tri" width="72" height="72" viewBox="0 0 72 72" fill="none">
-              <polygon points="36,6 66,60 6,60" stroke="#F04906" stroke-width="2" fill="rgba(240,73,6,0.08)"/>
-              <polygon points="36,18 54,54 18,54" stroke="#F04906" stroke-width="1" fill="rgba(240,73,6,0.04)" opacity="0.7"/>
-              <line x1="36" y1="6" x2="36" y2="60" stroke="#F04906" stroke-width="1" opacity="0.25"/>
-            </svg>
-            <span class="preview-label">Sol Ascension</span>
-            <span class="preview-hint">Replace with game screenshot</span>
-          </div>
+          <img src="assets/games/sol-ascension-screenshot.png" alt="Sol Ascension gameplay" style="width:100%;height:100%;object-fit:cover;border-radius:20px;">
           <div class="preview-dapp">
             <div class="sol-dot"></div>
             Seeker Exclusive
@@ -412,7 +408,9 @@
 <footer>
   <div class="container">
     <div class="footer-inner">
-      <a href="index.html" class="footer-logo">Ascend<span>Forge</span></a>
+      <a href="index.html" class="footer-logo">
+        <img src="assets/logo/ascendforge-logo.png" alt="AscendForge" style="height:28px;width:auto;display:block;opacity:0.85;">
+      </a>
       <ul class="footer-links">
         <li><a href="index.html">Studio</a></li>
         <li><a href="https://site.sol-ascension.com" target="_blank" rel="noopener">Game Site</a></li>

@@ -174,6 +174,13 @@
       radial-gradient(ellipse 50% 40% at 20% 80%, rgba(200,135,58,0.07) 0%, transparent 60%),
       linear-gradient(180deg, #0a0a0a 0%, #0d0808 50%, #0a0a0a 100%);
   }
+  .hero-bg-img {
+    position: absolute;
+    inset: 0;
+    background: url('assets/hero/forge-bg.jpg') center center / cover no-repeat;
+    opacity: 0.18;
+    mix-blend-mode: luminosity;
+  }
   /* ember particle dots */
   .hero-bg::after {
     content: '';
@@ -386,21 +393,7 @@
     height: 100%;
     object-fit: cover;
   }
-  /* placeholder banner SVG background */
-  .game-card-banner.placeholder-sa {
-    background: linear-gradient(135deg, #1a0800 0%, #0a0a1a 60%, #0d0505 100%);
-  }
-  .game-card-banner.placeholder-rb {
-    background: linear-gradient(135deg, #000d1a 0%, #0a0010 60%, #001008 100%);
-  }
-  .placeholder-art {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0.25;
-  }
+
   .banner-tag {
     position: absolute;
     top: 12px;
@@ -681,7 +674,9 @@
 <!-- ── NAV ──────────────────────────────────────────────────────── -->
 <nav id="nav">
   <div class="container nav-inner">
-    <a href="index.html" class="nav-logo">Ascend<span>Forge</span></a>
+    <a href="index.html" class="nav-logo">
+      <img src="assets/logo/ascendforge-logo.png" alt="AscendForge" style="height:32px;width:auto;display:block;">
+    </a>
     <ul class="nav-links">
       <li><a href="#games">Games</a></li>
       <li><a href="#milestones">Milestones</a></li>
@@ -699,6 +694,7 @@
 <!-- ── HERO ──────────────────────────────────────────────────────── -->
 <section class="hero" id="home">
   <div class="hero-bg"></div>
+  <div class="hero-bg-img"></div>
   <div class="container">
     <div class="hero-content">
       <div class="seeker-badge reveal">
@@ -771,23 +767,14 @@
 
       <!-- Sol Ascension -->
       <div class="game-card reveal">
-        <div class="game-card-banner placeholder-sa">
-          <div class="placeholder-art">
-            <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
-              <polygon points="60,10 110,95 10,95" stroke="#F04906" stroke-width="2" fill="none" opacity="0.6"/>
-              <polygon points="60,30 90,85 30,85" stroke="#F04906" stroke-width="1" fill="rgba(240,73,6,0.05)" opacity="0.8"/>
-              <line x1="60" y1="10" x2="60" y2="95" stroke="#F04906" stroke-width="1" opacity="0.3"/>
-            </svg>
-          </div>
+        <div class="game-card-banner">
+          <img src="assets/games/sol-ascension-banner.jpg" alt="Sol Ascension" style="width:100%;height:100%;object-fit:cover;">
           <div class="banner-tag"><span class="tag live">Live</span></div>
         </div>
         <div class="game-card-body">
           <div class="game-card-title-row">
             <div class="game-icon">
-              <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-                <rect width="28" height="28" rx="6" fill="#1a0800"/>
-                <polygon points="14,4 24,22 4,22" fill="#F04906" opacity="0.9"/>
-              </svg>
+              <img src="assets/games/sol-ascension-icon.png" alt="Sol Ascension icon">
             </div>
             <h3>Sol Ascension</h3>
           </div>
@@ -807,24 +794,14 @@
 
       <!-- RuneBound TBA -->
       <div class="game-card reveal">
-        <div class="game-card-banner placeholder-rb">
-          <div class="placeholder-art">
-            <svg width="110" height="110" viewBox="0 0 110 110" fill="none">
-              <rect x="20" y="20" width="70" height="70" rx="4" stroke="#14F195" stroke-width="1.5" fill="none" opacity="0.4"/>
-              <rect x="35" y="35" width="40" height="40" rx="2" stroke="#9945FF" stroke-width="1" fill="rgba(153,69,255,0.05)" opacity="0.7"/>
-              <circle cx="55" cy="55" r="8" stroke="#14F195" stroke-width="1.5" fill="none" opacity="0.6"/>
-            </svg>
-          </div>
+        <div class="game-card-banner">
+          <img src="assets/games/runebound-banner.jpg" alt="RuneBound" style="width:100%;height:100%;object-fit:cover;">
           <div class="banner-tag"><span class="tag wip">In Dev</span></div>
         </div>
         <div class="game-card-body">
           <div class="game-card-title-row">
             <div class="game-icon">
-              <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-                <rect width="28" height="28" rx="6" fill="#000d1a"/>
-                <rect x="8" y="8" width="12" height="12" rx="2" fill="none" stroke="#14F195" stroke-width="1.5" opacity="0.8"/>
-                <circle cx="14" cy="14" r="3" fill="#9945FF" opacity="0.9"/>
-              </svg>
+              <img src="assets/games/runebound-icon.png" alt="RuneBound icon">
             </div>
             <h3>RuneBound</h3>
           </div>
@@ -967,7 +944,9 @@
 <footer>
   <div class="container">
     <div class="footer-inner">
-      <div class="footer-logo">Ascend<span>Forge</span></div>
+      <a href="index.html" class="footer-logo">
+        <img src="assets/logo/ascendforge-logo.png" alt="AscendForge" style="height:28px;width:auto;display:block;opacity:0.85;">
+      </a>
       <ul class="footer-links">
         <li><a href="sol-ascension.html">Sol Ascension</a></li>
         <li><a href="runebound.html">RuneBound</a></li>
