@@ -133,44 +133,7 @@
 
   .hero-sub { font-size: 16px; color: var(--c-muted); line-height: 1.7; max-width: 480px; margin: 0 auto 32px; }
 
-  /* notify form */
-  .notify-form {
-    display: flex;
-    gap: 8px;
-    max-width: 400px;
-    margin: 0 auto 16px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  .notify-input {
-    flex: 1 1 200px;
-    padding: 13px 16px;
-    background: var(--c-surface);
-    border: 1px solid var(--c-border);
-    border-radius: var(--r);
-    color: var(--c-text);
-    font-family: var(--f-body);
-    font-size: 14px;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .notify-input::placeholder { color: var(--c-muted); }
-  .notify-input:focus { border-color: var(--c-purple); }
-  .notify-btn {
-    padding: 13px 22px;
-    background: var(--c-purple);
-    color: var(--c-white);
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    border-radius: var(--r);
-    border: none;
-    cursor: pointer;
-    transition: opacity 0.2s, transform 0.15s;
-  }
-  .notify-btn:hover { opacity: 0.85; transform: translateY(-1px); }
-  .notify-hint { font-size: 11px; color: var(--c-muted); letter-spacing: 0.05em; }
+
 
   /* TEASER SECTION */
   section { padding: 72px 0; }
@@ -208,7 +171,7 @@
 <nav id="nav">
   <div class="nav-inner">
     <a href="index.html" class="nav-logo">
-      <img src="assets/logo/ascendforge-logo.png" alt="AscendForge" style="height:auto;max-height:28px;width:auto;max-width:120px;display:block;">
+      <img src="assets/logo/ascendforge-logo.png" alt="AscendForge" style="height:auto;max-height:35px;width:auto;max-width:150px;display:block;">
     </a>
     <a href="index.html" class="nav-back">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
@@ -266,11 +229,6 @@
       An on-chain card battler. Bind runes, build decks, and challenge other players. More details dropping soon.
     </p>
 
-    <div class="notify-form reveal">
-      <input type="email" class="notify-input" placeholder="your@email.com" id="emailInput">
-      <button class="notify-btn" onclick="handleNotify()">Notify Me</button>
-    </div>
-    <p class="notify-hint reveal" id="notifyHint">Get notified when RuneBound launches. No spam.</p>
   </div>
 </section>
 
@@ -317,7 +275,7 @@
 <footer>
   <div class="footer-inner">
     <a href="index.html" class="footer-logo">
-      <img src="assets/logo/ascendforge-logo.png" alt="AscendForge" style="height:auto;max-height:24px;width:auto;max-width:104px;display:block;opacity:0.85;">
+      <img src="assets/logo/ascendforge-logo.png" alt="AscendForge" style="height:auto;max-height:30px;width:auto;max-width:130px;display:block;opacity:0.85;">
     </a>
     <ul class="footer-links">
       <li><a href="index.html">Studio</a></li>
@@ -339,18 +297,6 @@
     observer.observe(el);
   });
 
-  function handleNotify() {
-    const input = document.getElementById('emailInput');
-    const hint = document.getElementById('notifyHint');
-    if (input.value && input.value.includes('@')) {
-      hint.textContent = "You're on the list. We'll be in touch.";
-      hint.style.color = '#14F195';
-      input.value = '';
-    } else {
-      hint.textContent = 'Enter a valid email address.';
-      hint.style.color = '#F04906';
-    }
-  }
 </script>
 </body>
 </html>
