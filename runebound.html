@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="RuneBound — an on-chain card battler for Solana Mobile. Coming soon from AscendForge.">
+<meta property="og:title" content="RuneBound — AscendForge">
+<meta property="og:description" content="An on-chain card battler for the Solana Seeker. Coming soon.">
+<meta name="twitter:card" content="summary_large_image">
+<title>RuneBound — AscendForge</title>
+<style>
+  :root {
+    --c-bg:      #09090f;
+    --c-surface: #0f0f1a;
+    --c-border:  #1e1e30;
+    --c-purple:  #9945FF;
+    --c-green:   #14F195;
+    --c-text:    #E7E7E7;
+    --c-muted:   #777799;
+    --c-white:   #ffffff;
+    --c-ember:   #F04906;
+    --f-display: 'Barlow Condensed', 'Impact', sans-serif;
+    --f-body:    'Inter', 'DM Sans', system-ui, sans-serif;
+    --r: 6px; --r-lg: 12px;
+    --nav-h: 60px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--c-bg); color: var(--c-text); font-family: var(--f-body); line-height: 1.6; overflow-x: hidden; min-height: 100svh; }
+  a { color: inherit; text-decoration: none; }
+  @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Inter:wght@400;500;600&display=swap');
+  .container { width: 100%; max-width: 900px; margin: 0 auto; padding: 0 20px; }
+  .eyebrow { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--c-purple); margin-bottom: 12px; }
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.55s ease, transform 0.55s ease; }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+
+  nav { position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h); z-index: 100; background: transparent; transition: background 0.3s; }
+  nav.scrolled { background: rgba(9,9,15,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--c-border); }
+  .nav-inner { height: 100%; max-width: 900px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; }
+  .nav-logo { font-family: var(--f-display); font-size: 22px; font-weight: 900; letter-spacing: 0.03em; text-transform: uppercase; color: var(--c-white); }
+  .nav-logo span { color: var(--c-ember); }
+  .nav-back { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--c-muted); transition: color 0.2s; }
+  .nav-back:hover { color: var(--c-text); }
+
+  /* HERO — full-page centered */
+  .hero {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: calc(var(--nav-h) + 40px) 20px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 40%, rgba(153,69,255,0.12) 0%, transparent 65%),
+      radial-gradient(ellipse 40% 35% at 20% 75%, rgba(20,241,149,0.05) 0%, transparent 55%),
+      var(--c-bg);
+  }
+  /* animated rune grid */
+  .rune-grid {
+    position: absolute; inset: 0; pointer-events: none; overflow: hidden; opacity: 0.04;
+  }
+  .rune-grid svg { width: 100%; height: 100%; }
+
+  .hero-content { position: relative; z-index: 1; max-width: 620px; }
+
+  /* card deck animation */
+  .deck-preview {
+    width: 180px;
+    height: 240px;
+    position: relative;
+    margin: 0 auto 36px;
+  }
+  .card-back {
+    position: absolute;
+    width: 140px;
+    height: 200px;
+    border-radius: 10px;
+    border: 1px solid var(--c-border);
+    top: 50%; left: 50%;
+    background: linear-gradient(135deg, #0f0f1a, #1a0a2a);
+  }
+  .card-back:nth-child(1) { transform: translate(-50%, -50%) rotate(-8deg) translate(-20px, 4px); }
+  .card-back:nth-child(2) { transform: translate(-50%, -50%) rotate(-3deg) translate(-8px, 0px); }
+  .card-back.top {
+    transform: translate(-50%, -50%) rotate(2deg);
+    border-color: rgba(153,69,255,0.35);
+    background: linear-gradient(135deg, #0f0f22, #190f2a);
+    animation: cardFloat 4s ease-in-out infinite;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .card-inner { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .card-rune {
+    width: 60px; height: 60px;
+    background: rgba(153,69,255,0.08);
+    border: 1px solid rgba(153,69,255,0.25);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .card-name { font-family: var(--f-display); font-size: 13px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--c-purple); opacity: 0.8; }
+  .card-power { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--c-muted); }
+  @keyframes cardFloat { 0%,100% { transform: translate(-50%,-50%) rotate(2deg) translateY(0); } 50% { transform: translate(-50%,-50%) rotate(2deg) translateY(-8px); } }
+
+  .wip-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 16px 6px 6px;
+    background: rgba(153,69,255,0.08);
+    border: 1px solid rgba(153,69,255,0.2);
+    border-radius: 99px;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--c-purple);
+    margin-bottom: 20px;
+  }
+  .wip-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--c-purple); animation: blinkDot 1.5s ease-in-out infinite; }
+  @keyframes blinkDot { 0%,100% { opacity: 1; } 50% { opacity: 0.2; } }
+
+  .hero-content h1 {
+    font-family: var(--f-display);
+    font-size: clamp(60px, 14vw, 110px);
+    font-weight: 900;
+    line-height: 0.9;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    color: var(--c-white);
+    margin-bottom: 20px;
+  }
+  .hero-content h1 em { font-style: normal; background: linear-gradient(135deg, var(--c-purple), var(--c-green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+  .hero-sub { font-size: 16px; color: var(--c-muted); line-height: 1.7; max-width: 480px; margin: 0 auto 32px; }
+
+  /* notify form */
+  .notify-form {
+    display: flex;
+    gap: 8px;
+    max-width: 400px;
+    margin: 0 auto 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .notify-input {
+    flex: 1 1 200px;
+    padding: 13px 16px;
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--r);
+    color: var(--c-text);
+    font-family: var(--f-body);
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .notify-input::placeholder { color: var(--c-muted); }
+  .notify-input:focus { border-color: var(--c-purple); }
+  .notify-btn {
+    padding: 13px 22px;
+    background: var(--c-purple);
+    color: var(--c-white);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-radius: var(--r);
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.15s;
+  }
+  .notify-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+  .notify-hint { font-size: 11px; color: var(--c-muted); letter-spacing: 0.05em; }
+
+  /* TEASER SECTION */
+  section { padding: 72px 0; }
+  .teaser-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+  .teaser-card {
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--r-lg);
+    padding: 24px;
+    text-align: center;
+    transition: border-color 0.2s;
+  }
+  .teaser-card:hover { border-color: rgba(153,69,255,0.3); }
+  .teaser-icon {
+    width: 48px; height: 48px; border-radius: var(--r);
+    background: rgba(153,69,255,0.08);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 14px;
+  }
+  .teaser-card h4 { font-family: var(--f-display); font-size: 18px; font-weight: 800; text-transform: uppercase; color: var(--c-white); margin-bottom: 6px; }
+  .teaser-card p { font-size: 13px; color: var(--c-muted); line-height: 1.6; }
+
+  footer { border-top: 1px solid var(--c-border); padding: 36px 0; }
+  .footer-inner { max-width: 900px; margin: 0 auto; padding: 0 20px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; }
+  .footer-logo { font-family: var(--f-display); font-size: 18px; font-weight: 900; text-transform: uppercase; color: var(--c-white); }
+  .footer-logo span { color: var(--c-ember); }
+  .footer-links { display: flex; gap: 20px; list-style: none; }
+  .footer-links a { font-size: 12px; color: var(--c-muted); transition: color 0.2s; }
+  .footer-links a:hover { color: var(--c-text); }
+  .footer-copy { width: 100%; font-size: 11px; color: var(--c-muted); opacity: 0.4; }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Ascend<span>Forge</span></a>
+    <a href="index.html" class="nav-back">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+      All Games
+    </a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="rune-grid">
+    <svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <pattern id="rg" width="60" height="60" patternUnits="userSpaceOnUse">
+          <rect width="60" height="60" fill="none" stroke="#9945FF" stroke-width="0.5"/>
+        </pattern>
+      </defs>
+      <rect width="1200" height="800" fill="url(#rg)"/>
+      <circle cx="300" cy="200" r="80" fill="none" stroke="#9945FF" stroke-width="0.5"/>
+      <circle cx="900" cy="600" r="120" fill="none" stroke="#14F195" stroke-width="0.5"/>
+      <circle cx="600" cy="400" r="160" fill="none" stroke="#9945FF" stroke-width="0.5"/>
+    </svg>
+  </div>
+
+  <div class="hero-content">
+    <div class="deck-preview reveal">
+      <div class="card-back"></div>
+      <div class="card-back"></div>
+      <div class="card-back top">
+        <div class="card-inner">
+          <div class="card-rune">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+              <rect x="6" y="6" width="20" height="20" rx="2" stroke="#9945FF" stroke-width="1.5"/>
+              <circle cx="16" cy="16" r="5" stroke="#14F195" stroke-width="1.2"/>
+              <line x1="16" y1="6" x2="16" y2="11" stroke="#9945FF" stroke-width="1"/>
+              <line x1="16" y1="21" x2="16" y2="26" stroke="#9945FF" stroke-width="1"/>
+              <line x1="6" y1="16" x2="11" y2="16" stroke="#9945FF" stroke-width="1"/>
+              <line x1="21" y1="16" x2="26" y2="16" stroke="#9945FF" stroke-width="1"/>
+            </svg>
+          </div>
+          <span class="card-name">Void Rune</span>
+          <span class="card-power">ATK +12</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="wip-badge reveal">
+      <span class="wip-dot"></span>
+      In Development
+    </div>
+
+    <span class="eyebrow reveal">AscendForge · Game 02</span>
+    <h1 class="reveal">Rune<em>Bound</em></h1>
+    <p class="hero-sub reveal">
+      An on-chain card battler built for the Solana Seeker. Bind runes, build decks, and challenge other players. More details dropping soon.
+    </p>
+
+    <div class="notify-form reveal">
+      <input type="email" class="notify-input" placeholder="your@email.com" id="emailInput">
+      <button class="notify-btn" onclick="handleNotify()">Notify Me</button>
+    </div>
+    <p class="notify-hint reveal" id="notifyHint">Get notified when RuneBound launches. No spam.</p>
+  </div>
+</section>
+
+<!-- TEASER -->
+<section>
+  <div class="container">
+    <div style="text-align:center;margin-bottom:44px;" class="reveal">
+      <span class="eyebrow">What We're Forging</span>
+      <h2 style="font-family:var(--f-display);font-size:clamp(32px,6vw,52px);font-weight:800;text-transform:uppercase;color:var(--c-white);line-height:1.05;">Early Signals</h2>
+    </div>
+    <div class="teaser-grid">
+      <div class="teaser-card reveal">
+        <div class="teaser-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9945FF" stroke-width="1.8"><rect x="2" y="2" width="9" height="9"/><rect x="13" y="2" width="9" height="9"/><rect x="2" y="13" width="9" height="9"/><rect x="13" y="13" width="9" height="9"/></svg>
+        </div>
+        <h4>Card Battler</h4>
+        <p>Build decks from collectible rune cards. Each deck tells a strategy. No two battles play the same.</p>
+      </div>
+      <div class="teaser-card reveal">
+        <div class="teaser-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9945FF" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h4>On-Chain Cards</h4>
+        <p>Cards are on-chain assets. Own them, trade them, burn them for rune shards. Real ownership on Solana.</p>
+      </div>
+      <div class="teaser-card reveal">
+        <div class="teaser-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#14F195" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <h4>PvP Battles</h4>
+        <p>Challenge other Seeker owners. Wallet-verified matches. Leaderboard rankings that actually mean something.</p>
+      </div>
+      <div class="teaser-card reveal">
+        <div class="teaser-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9945FF" stroke-width="1.8"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <h4>Seeker Native</h4>
+        <p>Designed from scratch for mobile. Wallet adapter built-in. No browser extension required.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <a href="index.html" class="footer-logo">Ascend<span>Forge</span></a>
+    <ul class="footer-links">
+      <li><a href="index.html">Studio</a></li>
+      <li><a href="sol-ascension.html">Sol Ascension</a></li>
+      <li><a href="https://x.com/AscendForge" target="_blank" rel="noopener">X</a></li>
+    </ul>
+    <p class="footer-copy">&copy; 2025 AscendForge. RuneBound is in development.</p>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 20); }, { passive: true });
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); observer.unobserve(e.target); } });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach((el, i) => {
+    el.style.transitionDelay = `${i * 50}ms`;
+    observer.observe(el);
+  });
+
+  function handleNotify() {
+    const input = document.getElementById('emailInput');
+    const hint = document.getElementById('notifyHint');
+    if (input.value && input.value.includes('@')) {
+      hint.textContent = "You're on the list. We'll be in touch.";
+      hint.style.color = '#14F195';
+      input.value = '';
+    } else {
+      hint.textContent = 'Enter a valid email address.';
+      hint.style.color = '#F04906';
+    }
+  }
+</script>
+</body>
+</html>
