@@ -131,6 +131,34 @@
   .gear-section { background: var(--c-surface); border-top: 1px solid var(--c-border); border-bottom: 1px solid var(--c-border); }
   .gear-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
   @media (max-width: 640px) { .gear-grid { grid-template-columns: 1fr; } }
+  .gear-armor-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 48px;
+    width: 320px;
+    max-width: 100%;
+  }
+  .gear-armor-glow {
+    position: absolute;
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center, rgba(200,135,58,0.35) 0%, rgba(240,73,6,0.12) 45%, transparent 70%);
+    filter: blur(24px);
+    z-index: 0;
+  }
+  .gear-armor-img {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    filter: drop-shadow(0 0 32px rgba(200,135,58,0.3));
+  }
   .gear-card {
     background: linear-gradient(135deg, rgba(240,73,6,0.06), rgba(200,135,58,0.04));
     border: 1px solid rgba(240,73,6,0.2);
@@ -310,6 +338,10 @@
       <span class="eyebrow">On-Chain Shop</span>
       <h2>The Holy Divine Set</h2>
       <p>The only paid item in the game. Everything else is free.</p>
+    </div>
+    <div class="gear-armor-wrap reveal">
+      <div class="gear-armor-glow"></div>
+      <img src="assets/games/holy_divine_set.png" alt="Holy Divine Set armor" class="gear-armor-img">
     </div>
     <div class="gear-grid">
       <div class="gear-card reveal">
